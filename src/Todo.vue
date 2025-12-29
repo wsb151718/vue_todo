@@ -24,6 +24,13 @@ function addTodo(text) {
   lastInsertId.value++
   todoList.value.push({ id: lastInsertId.value, text, finished: false })
 }
+function changeFinished(item) {
+  const idx = todoList.value.findIndex((todo) => todo.id === item.id)
+
+  if (idx !== -1) {
+    todoList.value[idx].finished = !todoList.value[idx].finished
+  }
+}
 </script>
 
 <template>
@@ -51,7 +58,7 @@ function addTodo(text) {
       </ul>
       <button class="c-capsuelButton alert active"><TrashIcon class="icon" />削除</button>
     </div>
-    <TodoList :list="todoList"></TodoList>
+    <TodoList :list="todoList" @toggle-finished="changeFinished"></TodoList>
   </div>
 </template>
 
@@ -120,7 +127,5 @@ function addTodo(text) {
   &:focus {
     opacity: 0.7;
   }
-}
-.c-deleteButton {
 }
 </style>

@@ -1,17 +1,24 @@
 <script setup>
+import { ref, watch } from 'vue'
 import ToggleItem from './ToggleItem.vue'
 
-const props = defineProps(['text'])
+const props = defineProps(['text', 'id', 'finished'])
+const emits = defineEmits(['change-finished'])
+
+const toggleModel = ref(props.finished)
+watch(toggleModel, (newFinished) => {
+  emits('change-finished')
+})
 </script>
 
 <template>
-  <li class="c-todoItem">
+  <li class="c-todoItem" :class="{ disabled: finished }">
     <div class="c-todoItem__main">
       <p class="c-todoItem__text">{{ text }}</p>
       <input type="text" class="c-todoItem__input" />
     </div>
     <div class="c-todoItem__parts">
-      <ToggleItem />
+      <ToggleItem v-model="toggleModel" />
       <button class="c-minusButton"></button>
     </div>
   </li>
@@ -21,11 +28,18 @@ const props = defineProps(['text'])
 .c-todoItem {
   font-size: 1.4rem;
   border-radius: 8px;
-  border: 1px solid #aaa;
+  border: 1px solid currentColor;
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: all 0.25s ease;
+  &.disabled {
+    color: #aaa;
+    & .c-todoItem__text {
+      text-decoration: line-through;
+    }
+  }
 }
 .c-todoItem__input {
   display: none;

@@ -1,8 +1,10 @@
-<script setup></script>
+<script setup>
+const checkModel = defineModel()
+</script>
 
 <template>
   <div class="c-toggle">
-    <input type="checkbox" />
+    <input type="checkbox" v-model="checkModel" />
     <div class="c-toggle__handle"></div>
   </div>
 </template>
