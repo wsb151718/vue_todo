@@ -17,7 +17,13 @@ function changeFilter(button) {
   filterData.value.isFilter = button.isFilter
   filterData.value.isFinished = button.isFinished
 }
-// const isActive = computed(() => {})
+
+const todoList = ref([])
+const lastInsertId = ref(0)
+function addTodo(text) {
+  lastInsertId.value++
+  todoList.value.push({ id: lastInsertId.value, text, finished: false })
+}
 </script>
 
 <template>
@@ -26,7 +32,7 @@ function changeFilter(button) {
       <h1 class="c-heading__title">Vue Todo</h1>
       <p>表示件数 件</p>
     </div>
-    <TodoForm></TodoForm>
+    <TodoForm @add="addTodo"></TodoForm>
     <div class="p-itemWrapper">
       <ul class="c-buttonList">
         <li v-for="button in filterData.buttons" :key="button.text">
@@ -45,7 +51,7 @@ function changeFilter(button) {
       </ul>
       <button class="c-capsuelButton alert active"><TrashIcon class="icon" />削除</button>
     </div>
-    <TodoList></TodoList>
+    <TodoList :list="todoList"></TodoList>
   </div>
 </template>
 

@@ -1,10 +1,12 @@
 <script setup>
 import TodoItem from './TodoItem.vue'
+
+const props = defineProps(['list'])
 </script>
 
 <template>
   <ul class="p-todoList">
-    <TodoItem text="テスト"></TodoItem>
+    <TodoItem v-for="item in list" :key="item.id" :text="item.text"></TodoItem>
   </ul>
 </template>
 
