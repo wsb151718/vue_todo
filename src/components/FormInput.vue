@@ -1,9 +1,10 @@
 <script setup>
 const props = defineProps(['placeholder'])
+const input = defineModel()
 </script>
 
 <template>
-  <input type="text" class="c-input" :placeholder="placeholder" />
+  <input type="text" class="c-input" :placeholder="placeholder" v-model="input" />
 </template>
 
 <style scoped>

@@ -1,20 +1,44 @@
 <script setup>
+import { ref } from 'vue'
 import FormInput from './FormInput.vue'
+import ErrorMsg from './ErrorMsg.vue'
+
+const emits = defineEmits(['add'])
+const input = ref('')
+const error = ref('')
+
+function submitHandler(e) {
+  error.value = ''
+  if (input.value.length === 0) {
+    error.value = '1文字以上入力してください。'
+    return
+  }
+  emits('add', input.value)
+
+  input.value = ''
+}
 </script>
 
 <template>
-  <form action="" method="post" class="c-todoForm">
-    <FormInput placeholder="新規タスクをここに追加" class="c-todoInput"></FormInput>
-    <button type="submit" class="c-todoForm__add">追加</button>
-  </form>
+  <div class="c-todoForm">
+    <form action="" method="post" class="c-todoForm__form" @submit.prevent.trim="submitHandler">
+      <FormInput placeholder="新規タスクをここに追加" class="c-todoInput" v-model.trim="input" />
+      <button type="submit" class="c-todoForm__add">追加</button>
+    </form>
+    <ErrorMsg v-show="error.length">
+      {{ error }}
+    </ErrorMsg>
+  </div>
 </template>
 
 <style scoped>
 .c-todoForm {
+  margin-bottom: 10px;
+}
+.c-todoForm__form {
   width: 100%;
   display: flex;
   gap: 15px;
-  margin-bottom: 10px;
 }
 .c-todoInput {
   flex: 1;
@@ -30,5 +54,9 @@ import FormInput from './FormInput.vue'
   padding: 8px;
   font-size: 1.2rem;
   border-radius: 4px;
+
+  &:hover {
+    opacity: 0.75;
+  }
 }
 </style>
