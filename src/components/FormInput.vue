@@ -1,10 +1,19 @@
 <script setup>
-const props = defineProps(['placeholder'])
+import { useTemplateRef } from 'vue'
+
+const props = defineProps(['placeholder', 'isFocus'])
+const emits = defineEmits([''])
 const input = defineModel()
+const inputComponent = useTemplateRef('input-text')
+function focus() {
+  inputComponent.value.focus()
+}
+
+defineExpose({ focus })
 </script>
 
 <template>
-  <input type="text" class="c-input" :placeholder="placeholder" v-model="input" />
+  <input type="text" class="c-input" :placeholder="placeholder" v-model="input" ref="input-text" />
 </template>
 
 <style scoped>
