@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
-import FormInput from './FormInput.vue'
+import FormInput from './BaseInput.vue'
 import ErrorMsg from './ErrorMsg.vue'
 
 const emits = defineEmits(['add'])

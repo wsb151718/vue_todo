@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import ToggleItem from './ToggleItem.vue'
+import ToggleItem from './BaseToggle.vue'
 
 const props = defineProps(['text', 'id', 'finished'])
 const emits = defineEmits(['change-finished'])
