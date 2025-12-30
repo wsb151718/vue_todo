@@ -1,11 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import FormInput from './FormInput.vue'
 import ErrorMsg from './ErrorMsg.vue'
 
 const emits = defineEmits(['add'])
 const input = ref('')
 const error = ref('')
+const formInputTemp = useTemplateRef('form-input')
 
 function submitHandler(e) {
   error.value = ''
@@ -16,13 +17,26 @@ function submitHandler(e) {
   emits('add', input.value)
 
   input.value = ''
+  console.log(formInputTemp.value)
+
+  formInputTemp.value.focus()
 }
+
+onMounted(() => {
+  formInputTemp.value.focus()
+})
 </script>
 
 <template>
   <div class="c-todoForm">
     <form action="" method="post" class="c-todoForm__form" @submit.prevent.trim="submitHandler">
-      <FormInput placeholder="新規タスクをここに追加" class="c-todoInput" v-model.trim="input" />
+      <FormInput
+        placeholder="新規タスクをここに追加"
+        class="c-todoInput"
+        v-model.trim="input"
+        :is-focus="true"
+        ref="form-input"
+      />
       <button type="submit" class="c-todoForm__add">追加</button>
     </form>
     <ErrorMsg v-show="error.length">
