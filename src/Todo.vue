@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import TrashIcon from './components/icon/TrashIcon.vue'
 import TodoForm from './components/TodoForm.vue'
 import TodoList from './components/TodoList.vue'
@@ -33,6 +33,11 @@ try {
 
 const todoList = ref(savedTodoList || [])
 const lastInsertId = ref(savedLastInsertId)
+const filterTodoList = computed(() => {
+  return todoList.value.filter((todo) => {
+    return !filterData.value.isFilter || todo.finished === filterData.value.isFinished
+  })
+})
 watch(
   todoList,
   (newTodo) => {
@@ -97,7 +102,7 @@ function changeFinished(target) {
       <button class="c-capsuelButton alert active"><TrashIcon class="icon" />削除</button>
     </div>
     <TodoList
-      :list="todoList"
+      :list="filterTodoList"
       @toggle-finished="changeFinished"
       @delete-item="deleteTodo"
     ></TodoList>
