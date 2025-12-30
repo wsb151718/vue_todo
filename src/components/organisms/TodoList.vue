@@ -1,8 +1,8 @@
 <script setup>
-import TodoItem from './TodoItem.vue'
+import TodoItem from '../molecules/TodoItem.vue'
 
 const props = defineProps(['list'])
-const emits = defineEmits(['toggleFinished', 'deleteItem', 'editItem'])
+const emits = defineEmits(['toggleItemState', 'deleteItem', 'editItem'])
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const emits = defineEmits(['toggleFinished', 'deleteItem', 'editItem'])
       :text="item.text"
       :id="item.id"
       :finished="item.finished"
-      @change-finished="$emit('toggleFinished', item)"
+      @toggle-state="$emit('toggleItemState', item)"
       @delete-item="$emit('deleteItem', item)"
       @edit-item="(text) => $emit('editItem', item, text)"
     ></TodoItem>
