@@ -1,12 +1,12 @@
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
-import FormInput from './BaseInput.vue'
+import BaseInput from './BaseInput.vue'
 import ErrorMsg from './ErrorMsg.vue'
 
 const emits = defineEmits(['add'])
 const input = ref('')
 const error = ref('')
-const formInputTemp = useTemplateRef('form-input')
+const baseInputTemp = useTemplateRef('form-input')
 
 function submitHandler(e) {
   error.value = ''
@@ -18,18 +18,18 @@ function submitHandler(e) {
 
   input.value = ''
 
-  formInputTemp.value.focus()
+  baseInputTemp.value.focus()
 }
 
 onMounted(() => {
-  formInputTemp.value.focus()
+  baseInputTemp.value.focus()
 })
 </script>
 
 <template>
   <div class="c-todoForm">
     <form action="" method="post" class="c-todoForm__form" @submit.prevent.trim="submitHandler">
-      <FormInput
+      <BaseInput
         placeholder="新規タスクをここに追加"
         class="c-todoInput"
         v-model.trim="input"
