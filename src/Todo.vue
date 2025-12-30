@@ -67,6 +67,11 @@ function deleteTodo(target) {
     todoList.value = todoList.value.filter((todo) => todo !== target)
   }
 }
+function deleteTodoFinished() {
+  if (confirm('完了済みタスクを全て削除しますか?')) {
+    todoList.value = todoList.value.filter((todo) => todo.finished === false)
+  }
+}
 function changeFinished(target) {
   const idx = todoList.value.findIndex((todo) => todo.id === target.id)
 
@@ -99,7 +104,9 @@ function changeFinished(target) {
           </button>
         </li>
       </ul>
-      <button class="c-capsuelButton alert active"><TrashIcon class="icon" />削除</button>
+      <button class="c-capsuelButton alert active" @click="deleteTodoFinished">
+        <TrashIcon class="icon" />削除
+      </button>
     </div>
     <TodoList
       :list="filterTodoList"
