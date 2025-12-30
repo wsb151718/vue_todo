@@ -85,7 +85,7 @@ function changeFinished(target) {
   <div class="c-todoBox">
     <div class="c-heading">
       <h1 class="c-heading__title">Vue Todo</h1>
-      <p>表示件数 件</p>
+      <p>表示件数 {{ filterTodoList.length }}件</p>
     </div>
     <TodoForm @add="addTodo"></TodoForm>
     <div class="p-itemWrapper">
