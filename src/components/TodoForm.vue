@@ -17,7 +17,6 @@ function submitHandler(e) {
   emits('add', input.value)
 
   input.value = ''
-  console.log(formInputTemp.value)
 
   formInputTemp.value.focus()
 }

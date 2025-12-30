@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import TrashIcon from './components/icon/TrashIcon.vue'
 import TodoForm from './components/TodoForm.vue'
 import TodoList from './components/TodoList.vue'
@@ -18,8 +18,41 @@ function changeFilter(button) {
   filterData.value.isFinished = button.isFinished
 }
 
-const todoList = ref([])
-const lastInsertId = ref(0)
+let savedTodoList = []
+let savedLastInsertId = 0
+
+try {
+  savedTodoList = JSON.parse(localStorage.getItem('todoList'))
+  savedLastInsertId = JSON.parse(localStorage.getItem('lastInsertId'))
+} catch (error) {
+  savedTodoList = []
+  savedLastInsertId = 0
+  alert('データの取得に失敗しました。')
+  console.error(error)
+}
+
+const todoList = ref(savedTodoList || [])
+const lastInsertId = ref(savedLastInsertId)
+watch(
+  todoList,
+  (newTodo) => {
+    try {
+      localStorage.setItem('todoList', JSON.stringify(newTodo))
+    } catch (error) {
+      alert('データの保存に失敗しました。')
+      console.error(error)
+    }
+  },
+  { deep: true }
+)
+watch(lastInsertId, (newId) => {
+  try {
+    localStorage.setItem('lastInsertId', newId)
+  } catch (error) {
+    alert('データの保存に失敗しました。')
+    console.error(error)
+  }
+})
 function addTodo(text) {
   lastInsertId.value++
   todoList.value.push({ id: lastInsertId.value, text, finished: false })
