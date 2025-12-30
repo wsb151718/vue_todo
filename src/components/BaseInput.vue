@@ -2,7 +2,6 @@
 import { useTemplateRef } from 'vue'
 
 const props = defineProps(['placeholder', 'isFocus'])
-const emits = defineEmits([''])
 const input = defineModel()
 const inputComponent = useTemplateRef('input-text')
 function focus() {
