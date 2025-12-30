@@ -67,6 +67,9 @@ function deleteTodo(target) {
     todoList.value = todoList.value.filter((todo) => todo !== target)
   }
 }
+function editTodoText(target, text) {
+  target.text = text
+}
 function deleteTodoFinished() {
   if (confirm('完了済みタスクを全て削除しますか?')) {
     todoList.value = todoList.value.filter((todo) => todo.finished === false)
@@ -112,6 +115,7 @@ function changeFinished(target) {
       :list="filterTodoList"
       @toggle-finished="changeFinished"
       @delete-item="deleteTodo"
+      @edit-item="editTodoText"
     ></TodoList>
   </div>
 </template>
