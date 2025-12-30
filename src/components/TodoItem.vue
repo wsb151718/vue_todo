@@ -1,13 +1,14 @@
 <script setup>
 import { ref, watch } from 'vue'
 import ToggleItem from './BaseToggle.vue'
+import BaseCircleButton from './BaseCircleButton.vue'
 
 const props = defineProps(['text', 'id', 'finished'])
-const emits = defineEmits(['change-finished'])
+const emits = defineEmits(['changeFinished', 'deleteItem'])
 
 const toggleModel = ref(props.finished)
-watch(toggleModel, (newFinished) => {
-  emits('change-finished')
+watch(toggleModel, () => {
+  emits('changeFinished')
 })
 </script>
 
@@ -19,7 +20,7 @@ watch(toggleModel, (newFinished) => {
     </div>
     <div class="c-todoItem__parts">
       <ToggleItem v-model="toggleModel" />
-      <button class="c-minusButton"></button>
+      <BaseCircleButton :is-delete="true" @click-handler="$emit('deleteItem')"></BaseCircleButton>
     </div>
   </li>
 </template>
@@ -50,31 +51,5 @@ watch(toggleModel, (newFinished) => {
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-}
-
-.c-minusButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--alert);
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%;
-    height: 2px;
-    background-color: #fff;
-  }
-
-  &:hover {
-    opacity: 0.7;
-  }
 }
 </style>
