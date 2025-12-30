@@ -2,7 +2,7 @@
 import TodoItem from './TodoItem.vue'
 
 const props = defineProps(['list'])
-const emits = defineEmits(['toggle-finished'])
+const emits = defineEmits(['toggleFinished', 'deleteItem'])
 </script>
 
 <template>
@@ -13,7 +13,8 @@ const emits = defineEmits(['toggle-finished'])
       :text="item.text"
       :id="item.id"
       :finished="item.finished"
-      @change-finished="$emit('toggle-finished', item)"
+      @change-finished="$emit('toggleFinished', item)"
+      @delete-item="$emit('deleteItem', item)"
     ></TodoItem>
   </ul>
 </template>
