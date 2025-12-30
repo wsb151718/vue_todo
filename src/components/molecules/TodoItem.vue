@@ -1,12 +1,12 @@
 <script setup>
 import { ErrorCodes, nextTick, ref, useTemplateRef, watch } from 'vue'
-import ToggleItem from './BaseToggle.vue'
-import BaseCircleButton from './BaseCircleButton.vue'
-import BaseInput from './BaseInput.vue'
-import ErrorMsg from './ErrorMsg.vue'
+import ToggleItem from '../atoms/BaseToggle.vue'
+import BaseCircleButton from '../atoms/BaseCircleButton.vue'
+import BaseInput from '../atoms/BaseInput.vue'
+import ErrorMsg from '../atoms/ErrorMsg.vue'
 
 const props = defineProps(['text', 'id', 'finished'])
-const emits = defineEmits(['changeFinished', 'deleteItem', 'editItem'])
+const emits = defineEmits(['toggleState', 'deleteItem', 'editItem'])
 
 const toggleModel = ref(props.finished)
 const isEditable = ref(false)
@@ -14,7 +14,7 @@ const baseInputTemp = useTemplateRef('form-input')
 const input = ref(props.text)
 const error = ref('')
 watch(toggleModel, () => {
-  emits('changeFinished')
+  emits('toggleState')
 })
 async function changeMode(editable) {
   isEditable.value = editable
