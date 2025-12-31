@@ -15,28 +15,33 @@ function changeFilter(button) {
   filterData.value.isFinished = button.isFinished
 }
 
-let savedTodoList = []
-let savedLastInsertId = 0
-
-try {
-  savedTodoList = JSON.parse(localStorage.getItem('todoList'))
-  savedLastInsertId = JSON.parse(localStorage.getItem('lastInsertId'))
-} catch (error) {
-  savedTodoList = []
-  savedLastInsertId = 0
-  alert('データの取得に失敗しました。')
-  console.error(error)
-}
-
-const todoList = ref(savedTodoList || [])
-const lastInsertId = ref(savedLastInsertId)
+const todoData = ref({
+  lastInsertId: 0,
+  list: [],
+  init() {
+    let savedTodoList = []
+    let savedLastInsertId = 0
+    try {
+      savedLastInsertId = JSON.parse(localStorage.getItem('lastInsertId'))
+      savedTodoList = JSON.parse(localStorage.getItem('todoList'))
+    } catch (error) {
+      savedLastInsertId = 0
+      savedTodoList = []
+      alert('データの取得に失敗しました。')
+      console.error(error)
+    } finally {
+      this.lastInsertId = savedLastInsertId
+      this.list = savedTodoList
+    }
+  },
+})
 const filterTodoList = computed(() => {
-  return todoList.value.filter((todo) => {
+  return todoData.value.list.filter((todo) => {
     return !filterData.value.isFilter || todo.finished === filterData.value.isFinished
   })
 })
 watch(
-  todoList,
+  todoData.value.list,
   (newTodo) => {
     try {
       localStorage.setItem('todoList', JSON.stringify(newTodo))
@@ -47,21 +52,24 @@ watch(
   },
   { deep: true }
 )
-watch(lastInsertId, (newId) => {
-  try {
-    localStorage.setItem('lastInsertId', newId)
-  } catch (error) {
-    alert('データの保存に失敗しました。')
-    console.error(error)
+watch(
+  () => todoData.value.lastInsertId,
+  (newId) => {
+    try {
+      localStorage.setItem('lastInsertId', newId)
+    } catch (error) {
+      alert('データの保存に失敗しました。')
+      console.error(error)
+    }
   }
-})
+)
 function addTodo(text) {
-  lastInsertId.value++
-  todoList.value.push({ id: lastInsertId.value, text, finished: false })
+  todoData.value.lastInsertId++
+  todoData.value.list.push({ id: todoData.value.lastInsertId, text, finished: false })
 }
 function deleteTodo(target) {
   if (confirm('本当に削除しますか?')) {
-    todoList.value = todoList.value.filter((todo) => todo !== target)
+    todoData.value.list = todoData.value.list.filter((todo) => todo !== target)
   }
 }
 function editTodoText(target, text) {
@@ -69,16 +77,18 @@ function editTodoText(target, text) {
 }
 function deleteTodoFinished() {
   if (confirm('完了済みタスクを全て削除しますか?')) {
-    todoList.value = todoList.value.filter((todo) => todo.finished === false)
+    todoData.value.list = todoData.value.list.filter((todo) => todo.finished === false)
   }
 }
 function changeFinished(target) {
-  const idx = todoList.value.findIndex((todo) => todo.id === target.id)
+  const idx = todoData.value.list.findIndex((todo) => todo.id === target.id)
 
   if (idx !== -1) {
-    todoList.value[idx].finished = !todoList.value[idx].finished
+    todoData.value.list[idx].finished = !todoData.value.list[idx].finished
   }
 }
+
+todoData.value.init()
 </script>
 
 <template>
