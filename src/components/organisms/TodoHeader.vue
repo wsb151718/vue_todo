@@ -1,10 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { onUpdated, ref } from 'vue'
 import TrashIcon from '../icon/TrashIcon.vue'
 import TodoForm from '../molecules/TodoForm.vue'
+import BaseCapsuelButton from '../atoms/BaseCapsuelButton.vue'
 
 const props = defineProps(['showCount', 'buttons', 'isFilter', 'isFinished'])
 const emits = defineEmits(['addTodo', 'deleteTodos', 'filterTodo'])
+
+// onUpdated(() => {
+//   console.log(props.isFilter)
+// })
 </script>
 
 <template>
@@ -16,20 +21,18 @@ const emits = defineEmits(['addTodo', 'deleteTodos', 'filterTodo'])
   <div class="p-itemWrapper">
     <ul class="c-buttonList">
       <li v-for="button in buttons" :key="button.text">
-        <button
-          class="c-capsuelButton"
-          :class="{
-            active: isFilter === button.isFilter && isFinished === button.isFinished,
-          }"
-          @click="$emit('filterTodo', button)"
+        <BaseCapsuelButton
+          :is-active="isFilter === button.isFilter && isFinished === button.isFinished"
+          :is-alert="false"
+          @click-handler="$emit('filterTodo', button)"
         >
           {{ button.text }}
-        </button>
+        </BaseCapsuelButton>
       </li>
     </ul>
-    <button class="c-capsuelButton alert active" @click="$emit('deleteTodos')">
-      <TrashIcon class="icon" />削除
-    </button>
+    <BaseCapsuelButton :is-active="true" :is-alert="true" @click-handler="$emit('deleteTodos')"
+      ><TrashIcon class="icon" />削除
+    </BaseCapsuelButton>
   </div>
 </template>
 
@@ -55,37 +58,5 @@ const emits = defineEmits(['addTodo', 'deleteTodos', 'filterTodo'])
   display: flex;
   align-items: center;
   gap: 10px;
-}
-.c-capsuelButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 3px 8px;
-  --color: #aaa;
-  color: var(--color);
-  border: 1px solid var(--color);
-  font-size: 1.2rem;
-  border-radius: calc(infinity * 1px);
-  white-space: nowrap;
-
-  &.active {
-    --color: var(--main);
-    color: #fff;
-    background-color: var(--color);
-  }
-  &.alert {
-    --color: var(--alert);
-  }
-
-  & > .icon {
-    width: 15px;
-    height: 15px;
-  }
-
-  &:hover,
-  &:focus {
-    opacity: 0.7;
-  }
 }
 </style>
