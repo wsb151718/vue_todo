@@ -22,6 +22,11 @@ export default defineConfig([
 
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
+  {
+    rules: {
+      'vue/prop-name-casing': 'error',
+    },
+  },
 
   // Prettierにフォーマットを任せる。
   skipFormatting,
