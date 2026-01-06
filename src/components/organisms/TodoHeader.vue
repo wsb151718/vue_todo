@@ -15,7 +15,16 @@ defineProps({
   isFilter: Boolean,
   isFinished: Boolean,
 })
-defineEmits(['addTodo', 'deleteTodos', 'filterTodo'])
+defineEmits({
+  addTodo: null,
+  deleteTodos: null,
+  filterTodo: (button) => {
+    if (button && Object.hasOwn(button, 'isFinished') && Object.hasOwn(button, 'isFilter')) {
+      return true
+    }
+    return false
+  },
+})
 </script>
 
 <template>

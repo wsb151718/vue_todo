@@ -3,7 +3,14 @@ import { onMounted, ref, useTemplateRef } from 'vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 
-const emits = defineEmits(['add'])
+const emits = defineEmits({
+  add: (value) => {
+    if (value && value.trim().length === 0) {
+      return true
+    }
+    return false
+  },
+})
 const input = ref('')
 const error = ref('')
 const baseInputTemp = useTemplateRef('form-input')

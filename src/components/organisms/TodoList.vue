@@ -7,7 +7,16 @@ defineProps({
     required: true,
   },
 })
-defineEmits(['toggleItemState', 'deleteItem', 'editItem'])
+defineEmits({
+  toggleItemState: null,
+  deleteItem: null,
+  editItem: (item, text) => {
+    if (text && typeof text === 'string') {
+      return true
+    }
+    return false
+  },
+})
 </script>
 
 <template>

@@ -16,7 +16,16 @@ const props = defineProps({
   },
   finished: Boolean,
 })
-const emits = defineEmits(['toggleState', 'deleteItem', 'editItem'])
+const emits = defineEmits({
+  toggleState: null,
+  deleteItem: null,
+  editItem: (value) => {
+    if (value && typeof value === 'string' && value.length !== 0) {
+      return true
+    }
+    return false
+  },
+})
 
 const toggleModel = ref(props.finished)
 const isEditable = ref(false)
