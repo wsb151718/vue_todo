@@ -1,5 +1,5 @@
 <script setup>
-import { ErrorCodes, nextTick, ref, useTemplateRef, watch } from 'vue'
+import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import ToggleItem from '../atoms/BaseToggle.vue'
 import BaseCircleButton from '../atoms/BaseCircleButton.vue'
 import BaseInput from '../atoms/BaseInput.vue'
@@ -24,7 +24,7 @@ async function changeMode(editable) {
     baseInputTemp.value.focus()
   }
 }
-function editText(e) {
+function editText() {
   error.value = ''
   if (input.value.length === 0) {
     error.value = '1文字以上入力してください。'
@@ -41,9 +41,9 @@ function editText(e) {
       <p class="c-todoItem__text" @click="changeMode(true)">{{ text }}</p>
       <div class="c-todoItem__inputWrap">
         <BaseInput
-          class="c-todoItem__input"
-          v-model.trim="input"
           ref="form-input"
+          v-model.trim="input"
+          class="c-todoItem__input"
           @keydown.enter="editText"
           @keydown.esc="() => changeMode(false)"
           @blur="editText"

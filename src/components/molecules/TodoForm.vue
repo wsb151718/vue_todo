@@ -8,7 +8,7 @@ const input = ref('')
 const error = ref('')
 const baseInputTemp = useTemplateRef('form-input')
 
-function submitHandler(e) {
+function submitHandler() {
   error.value = ''
   if (input.value.length === 0) {
     error.value = '1文字以上入力してください。'
@@ -28,13 +28,13 @@ onMounted(() => {
 
 <template>
   <div class="c-todoForm">
-    <form action="" method="post" class="c-todoForm__form" @submit.prevent.trim="submitHandler">
+    <form action="" method="post" class="c-todoForm__form" @submit.prevent="submitHandler">
       <BaseInput
+        ref="form-input"
+        v-model.trim="input"
         placeholder="新規タスクをここに追加"
         class="c-todoInput"
-        v-model.trim="input"
         :is-focus="true"
-        ref="form-input"
       />
       <button type="submit" class="c-todoForm__add">追加</button>
     </form>

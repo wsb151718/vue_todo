@@ -1,17 +1,17 @@
 <script setup>
 import TodoItem from '../molecules/TodoItem.vue'
 
-const props = defineProps(['list'])
-const emits = defineEmits(['toggleItemState', 'deleteItem', 'editItem'])
+defineProps(['list'])
+defineEmits(['toggleItemState', 'deleteItem', 'editItem'])
 </script>
 
 <template>
   <ul class="p-todoList">
     <TodoItem
       v-for="item in list"
+      :id="item.id"
       :key="item.id"
       :text="item.text"
-      :id="item.id"
       :finished="item.finished"
       @toggle-state="$emit('toggleItemState', item)"
       @delete-item="$emit('deleteItem', item)"

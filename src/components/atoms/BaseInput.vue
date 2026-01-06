@@ -1,7 +1,7 @@
 <script setup>
 import { useTemplateRef } from 'vue'
 
-const props = defineProps(['placeholder', 'isFocus'])
+defineProps(['placeholder', 'isFocus'])
 const input = defineModel()
 const inputComponent = useTemplateRef('input-text')
 function focus() {
@@ -12,7 +12,7 @@ defineExpose({ focus })
 </script>
 
 <template>
-  <input type="text" class="c-input" :placeholder="placeholder" v-model="input" ref="input-text" />
+  <input ref="input-text" v-model="input" type="text" class="c-input" :placeholder="placeholder" />
 </template>
 
 <style scoped>

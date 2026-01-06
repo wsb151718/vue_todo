@@ -23,5 +23,6 @@ export default defineConfig([
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
 
+  // Prettierにフォーマットを任せる。
   skipFormatting,
 ])

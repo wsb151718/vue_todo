@@ -2,15 +2,8 @@
 import TodoList from '../organisms/TodoList.vue'
 import TodoHeader from '../organisms/TodoHeader.vue'
 
-const props = defineProps(['filterData', 'todoList'])
-const emits = defineEmits([
-  'addTodo',
-  'deleteTodos',
-  'filterTodo',
-  'toggleTodoState',
-  'deleteTodo',
-  'editTodo',
-])
+defineProps(['filterData', 'todoList'])
+defineEmits(['addTodo', 'deleteTodos', 'filterTodo', 'toggleTodoState', 'deleteTodo', 'editTodo'])
 </script>
 
 <template>

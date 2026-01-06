@@ -1,15 +1,10 @@
 <script setup>
-import { onUpdated, ref } from 'vue'
 import TrashIcon from '../icon/TrashIcon.vue'
 import TodoForm from '../molecules/TodoForm.vue'
 import BaseCapsuelButton from '../atoms/BaseCapsuelButton.vue'
 
-const props = defineProps(['showCount', 'buttons', 'isFilter', 'isFinished'])
-const emits = defineEmits(['addTodo', 'deleteTodos', 'filterTodo'])
-
-// onUpdated(() => {
-//   console.log(props.isFilter)
-// })
+defineProps(['showCount', 'buttons', 'isFilter', 'isFinished'])
+defineEmits(['addTodo', 'deleteTodos', 'filterTodo'])
 </script>
 
 <template>

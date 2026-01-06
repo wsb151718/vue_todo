@@ -4,7 +4,7 @@ const checkModel = defineModel()
 
 <template>
   <div class="c-toggle">
-    <input type="checkbox" v-model="checkModel" />
+    <input v-model="checkModel" type="checkbox" />
     <div class="c-toggle__handle"></div>
   </div>
 </template>

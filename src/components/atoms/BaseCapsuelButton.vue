@@ -1,8 +1,8 @@
 <script setup>
-import { computed, onUpdated, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps(['isActive', 'isAlert'])
-const emits = defineEmits(['clickHandler'])
+defineEmits(['clickHandler'])
 
 const classObj = computed(() => ({
   active: props.isActive,

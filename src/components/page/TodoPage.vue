@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
-import Todo from '../template/Todo.vue'
+import TodoTemplate from '../template/TodoTemplate.vue'
 const filterData = ref({
   isFilter: false,
   isFinished: null,
@@ -50,7 +50,7 @@ watch(
       console.error(error)
     }
   },
-  { deep: true }
+  { deep: true },
 )
 watch(
   () => todoData.value.lastInsertId,
@@ -61,7 +61,7 @@ watch(
       alert('データの保存に失敗しました。')
       console.error(error)
     }
-  }
+  },
 )
 function addTodo(text) {
   todoData.value.lastInsertId++
@@ -92,7 +92,7 @@ todoData.value.init()
 </script>
 
 <template>
-  <Todo
+  <TodoTemplate
     :filter-data="filterData"
     :todo-list="filterTodoList"
     @add-todo="addTodo"
@@ -101,7 +101,7 @@ todoData.value.init()
     @toggle-todo-state="changeFinished"
     @delete-todo="deleteTodo"
     @edit-todo="editTodoText"
-  ></Todo>
+  ></TodoTemplate>
 </template>
 
 <style scoped></style>

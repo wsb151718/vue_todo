@@ -1,6 +1,6 @@
 <script setup>
-const emits = defineEmits('clickHandler')
-const props = defineProps(['isDelete'])
+defineEmits('clickHandler')
+defineProps(['isDelete'])
 </script>
 
 <template>
