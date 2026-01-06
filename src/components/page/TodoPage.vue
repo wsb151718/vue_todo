@@ -41,7 +41,7 @@ const filterTodoList = computed(() => {
   })
 })
 watch(
-  todoData.value.list,
+  () => todoData.value.list,
   (newTodo) => {
     try {
       localStorage.setItem('todoList', JSON.stringify(newTodo))
