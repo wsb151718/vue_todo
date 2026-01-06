@@ -5,7 +5,7 @@ defineProps({
   placeholder: { type: String, default: '' },
   isFocus: Boolean,
 })
-const input = defineModel({ type: String })
+const [inputModel] = defineModel({ type: String })
 const inputComponent = useTemplateRef('input-text')
 function focus() {
   inputComponent.value.focus()
@@ -15,7 +15,13 @@ defineExpose({ focus })
 </script>
 
 <template>
-  <input ref="input-text" v-model="input" type="text" class="c-input" :placeholder="placeholder" />
+  <input
+    ref="input-text"
+    v-model="inputModel"
+    type="text"
+    class="c-input"
+    :placeholder="placeholder"
+  />
 </template>
 
 <style scoped>

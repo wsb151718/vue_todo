@@ -3,6 +3,10 @@ import { onMounted, ref, useTemplateRef } from 'vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const emits = defineEmits({
   add: (value) => {
     if (value && value.trim().length === 0) {
@@ -35,7 +39,13 @@ onMounted(() => {
 
 <template>
   <div class="c-todoForm">
-    <form action="" method="post" class="c-todoForm__form" @submit.prevent="submitHandler">
+    <form
+      action=""
+      method="post"
+      class="c-todoForm__form"
+      v-bind="$attrs"
+      @submit.prevent="submitHandler"
+    >
       <BaseInput
         ref="form-input"
         v-model.trim="input"

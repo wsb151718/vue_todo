@@ -3,6 +3,10 @@ import TrashIcon from '../icon/TrashIcon.vue'
 import TodoForm from '../molecules/TodoForm.vue'
 import BaseCapsuelButton from '../atoms/BaseCapsuelButton.vue'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 defineProps({
   showCount: {
     type: Number,
