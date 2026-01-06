@@ -5,7 +5,17 @@ import BaseCircleButton from '../atoms/BaseCircleButton.vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 
-const props = defineProps(['text', 'id', 'finished'])
+const props = defineProps({
+  text: {
+    type: String,
+    required: true,
+  },
+  id: {
+    type: Number,
+    required: true,
+  },
+  finished: Boolean,
+})
 const emits = defineEmits(['toggleState', 'deleteItem', 'editItem'])
 
 const toggleModel = ref(props.finished)

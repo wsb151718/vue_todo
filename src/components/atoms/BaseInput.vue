@@ -1,8 +1,11 @@
 <script setup>
 import { useTemplateRef } from 'vue'
 
-defineProps(['placeholder', 'isFocus'])
-const input = defineModel()
+defineProps({
+  placeholder: { type: String, default: '' },
+  isFocus: Boolean,
+})
+const input = defineModel({ type: String })
 const inputComponent = useTemplateRef('input-text')
 function focus() {
   inputComponent.value.focus()

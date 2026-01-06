@@ -1,6 +1,8 @@
 <script setup>
 defineEmits('clickHandler')
-defineProps(['isDelete'])
+defineProps({
+  isDelete: Boolean,
+})
 </script>
 
 <template>

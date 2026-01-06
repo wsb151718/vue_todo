@@ -8,7 +8,7 @@
   },
   "lint-staged": {
     "**/*.{vue,js,mjs,jsx}": [
-      "eslint . --fix",
+      "eslint --fix",
       "prettier --write --experimental-cli src/"
     ]
   },

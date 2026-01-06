@@ -1,7 +1,10 @@
 <script setup>
 import { computed } from 'vue'
 
-const props = defineProps(['isActive', 'isAlert'])
+const props = defineProps({
+  isActive: Boolean,
+  isAlert: Boolean,
+})
 defineEmits(['clickHandler'])
 
 const classObj = computed(() => ({

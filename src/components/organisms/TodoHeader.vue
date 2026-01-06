@@ -3,7 +3,18 @@ import TrashIcon from '../icon/TrashIcon.vue'
 import TodoForm from '../molecules/TodoForm.vue'
 import BaseCapsuelButton from '../atoms/BaseCapsuelButton.vue'
 
-defineProps(['showCount', 'buttons', 'isFilter', 'isFinished'])
+defineProps({
+  showCount: {
+    type: Number,
+    required: true,
+  },
+  buttons: {
+    type: Array,
+    required: true,
+  },
+  isFilter: Boolean,
+  isFinished: Boolean,
+})
 defineEmits(['addTodo', 'deleteTodos', 'filterTodo'])
 </script>
 

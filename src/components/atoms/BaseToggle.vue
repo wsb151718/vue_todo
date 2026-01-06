@@ -1,5 +1,5 @@
 <script setup>
-const checkModel = defineModel()
+const checkModel = defineModel({ type: Boolean, required: true })
 </script>
 
 <template>
