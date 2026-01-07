@@ -3,11 +3,12 @@ import { inject, onMounted, ref, useTemplateRef } from 'vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 import BaseButton from '../atoms/BaseButton.vue'
+import { todoListInjectKey } from '@/keys/keys'
 
 defineOptions({
   inheritAttrs: false,
 })
-const { addTodo } = inject('todoData')
+const { addTodo } = inject(todoListInjectKey)
 const input = ref('')
 const error = ref('')
 const baseInputTemp = useTemplateRef('form-input')

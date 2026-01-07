@@ -1,8 +1,9 @@
 <script setup>
 import { inject } from 'vue'
 import TodoItem from '../molecules/TodoItem.vue'
+import { todoListInjectKey } from '@/keys/keys'
 
-const { todoList, deleteTodo, editTodoText, toggleStatus } = inject('todoData')
+const { todoList, deleteTodo, editTodoText, toggleStatus } = inject(todoListInjectKey)
 </script>
 
 <template>

@@ -49,6 +49,7 @@ function editText() {
     error.value = '1文字以上入力してください。'
     return
   }
+
   emits('editItem', input.value)
   isEditable.value = false
 }

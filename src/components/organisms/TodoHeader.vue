@@ -4,19 +4,19 @@ import TodoForm from './TodoForm.vue'
 import BaseCapsuelButton from '../atoms/BaseCapsuelButton.vue'
 import { inject } from 'vue'
 import RowWrapper from '../atoms/RowWrapper.vue'
+import { todoListInjectKey } from '@/keys/keys'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const { isFilter, isFinished, filterList, changeFilter } = inject('filterData')
+const { deleteTodos, isFilter, isFinished, changeFilter, filterList, todoList } =
+  inject(todoListInjectKey)
 const ButtonStatusMap = new Map([
   ['all', '全て'],
   ['unfinished', '未完了'],
   ['finished', '完了'],
 ])
-
-const { todoList, deleteTodos } = inject('todoData')
 </script>
 
 <template>
@@ -31,7 +31,7 @@ const { todoList, deleteTodos } = inject('todoData')
         <BaseCapsuelButton
           v-if="ButtonStatusMap.has(filter.status)"
           :is-active="isFilter === filter.isFilter && isFinished === filter.isFinished"
-          @click-handler="changeFilter(filter)"
+          @click-handler="changeFilter(filter.isFilter, filter.isFinished)"
         >
           {{ ButtonStatusMap.get(filter.status) }}
         </BaseCapsuelButton>
