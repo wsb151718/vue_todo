@@ -1,47 +1,34 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, provide, readonly, ref, watch } from 'vue'
 import TodoTemplate from '../template/TodoTemplate.vue'
-const filterData = ref({
-  isFilter: false,
-  isFinished: null,
-  buttons: [
-    { text: '全て', isFilter: false, isFinished: null },
-    { text: '未完了', isFilter: true, isFinished: false },
-    { text: '完了', isFilter: true, isFinished: true },
-  ],
-})
-function changeFilter(button) {
-  filterData.value.isFilter = button.isFilter
-  filterData.value.isFinished = button.isFinished
-}
 
-const todoData = ref({
-  lastInsertId: 0,
-  list: [],
-  init() {
-    let savedTodoList = []
-    let savedLastInsertId = 0
-    try {
-      savedLastInsertId = JSON.parse(localStorage.getItem('lastInsertId'))
-      savedTodoList = JSON.parse(localStorage.getItem('todoList'))
-    } catch (error) {
-      savedLastInsertId = 0
-      savedTodoList = []
-      alert('データの取得に失敗しました。')
-      console.error(error)
-    } finally {
-      this.lastInsertId = savedLastInsertId
-      this.list = savedTodoList
-    }
-  },
+const isFilter = ref(false)
+const isFinished = ref(false)
+const filterList = ref([
+  { status: 'all', isFilter: false, isFinished: false },
+  { status: 'unfinished', isFilter: true, isFinished: false },
+  { status: 'finished', isFilter: true, isFinished: true },
+])
+function changeFilter(filter) {
+  isFilter.value = filter.isFilter
+  isFinished.value = filter.isFinished
+}
+provide('filterData', {
+  isFilter: readonly(isFilter),
+  isFinished: readonly(isFinished),
+  filterList: readonly(filterList),
+  changeFilter,
 })
+
+const lastInsertId = ref(0)
+const todoList = ref([])
 const filterTodoList = computed(() => {
-  return todoData.value.list.filter((todo) => {
-    return !filterData.value.isFilter || todo.finished === filterData.value.isFinished
+  return todoList.value.filter((todo) => {
+    return !isFilter.value || todo.finished === isFinished.value
   })
 })
 watch(
-  () => todoData.value.list,
+  todoList,
   (newTodo) => {
     try {
       localStorage.setItem('todoList', JSON.stringify(newTodo))
@@ -52,56 +39,76 @@ watch(
   },
   { deep: true },
 )
-watch(
-  () => todoData.value.lastInsertId,
-  (newId) => {
-    try {
-      localStorage.setItem('lastInsertId', newId)
-    } catch (error) {
-      alert('データの保存に失敗しました。')
-      console.error(error)
-    }
-  },
-)
+watch(lastInsertId, (newId) => {
+  try {
+    localStorage.setItem('lastInsertId', newId)
+  } catch (error) {
+    alert('データの保存に失敗しました。')
+    console.error(error)
+  }
+})
+function initTodoList() {
+  let savedTodoList = []
+  let savedLastInsertId = 0
+  try {
+    savedLastInsertId = JSON.parse(localStorage.getItem('lastInsertId'))
+    savedTodoList = JSON.parse(localStorage.getItem('todoList'))
+  } catch (error) {
+    savedLastInsertId = 0
+    savedTodoList = []
+    alert('データの取得に失敗しました。')
+    console.error(error)
+  } finally {
+    lastInsertId.value = savedLastInsertId
+    todoList.value = savedTodoList
+  }
+}
 function addTodo(text) {
-  todoData.value.lastInsertId++
-  todoData.value.list.push({ id: todoData.value.lastInsertId, text, finished: false })
+  lastInsertId.value++
+  todoList.value.push({ id: lastInsertId.value, text, finished: false })
 }
 function deleteTodo(target) {
   if (confirm('本当に削除しますか?')) {
-    todoData.value.list = todoData.value.list.filter((todo) => todo !== target)
+    todoList.value = todoList.value.filter((todo) => todo !== target)
   }
 }
 function editTodoText(target, text) {
   target.text = text
 }
-function deleteTodoFinished() {
-  if (confirm('完了済みタスクを全て削除しますか?')) {
-    todoData.value.list = todoData.value.list.filter((todo) => todo.finished === false)
+function deleteTodos(status) {
+  const msgList = {
+    all: 'タスクを全て削除しますか?',
+    finished: 'タスクを全て削除しますか?',
+    unfinished: '未完了タスクを全て削除しますか?',
+  }
+
+  const msg = msgList[status] ?? ''
+  if (msg && confirm(msg)) {
+    todoList.value = todoList.value.filter((todo) => todo.finished === false)
   }
 }
-function changeFinished(target) {
-  const idx = todoData.value.list.findIndex((todo) => todo.id === target.id)
+function toggleStatus(target) {
+  const idx = todoList.value.findIndex((todo) => todo.id === target.id)
 
   if (idx !== -1) {
-    todoData.value.list[idx].finished = !todoData.value.list[idx].finished
+    todoList.value[idx].finished = !todoList.value[idx].finished
   }
 }
 
-todoData.value.init()
+provide('todoData', {
+  todoList: filterTodoList,
+  addTodo,
+  deleteTodo,
+  editTodoText,
+  deleteTodos,
+  toggleStatus,
+})
+
+initTodoList()
 </script>
 
 <template>
-  <TodoTemplate
-    :filter-data="filterData"
-    :todo-list="filterTodoList"
-    @add-todo="addTodo"
-    @delete-todos="deleteTodoFinished"
-    @filter-todo="changeFilter"
-    @toggle-todo-state="changeFinished"
-    @delete-todo="deleteTodo"
-    @edit-todo="editTodoText"
-  ></TodoTemplate>
+  <TodoTemplate></TodoTemplate>
 </template>
 
 <style scoped></style>

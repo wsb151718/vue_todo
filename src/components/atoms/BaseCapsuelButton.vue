@@ -42,11 +42,6 @@ const classObj = computed(() => ({
     --color: var(--alert);
   }
 
-  & > .icon {
-    width: 15px;
-    height: 15px;
-  }
-
   &:hover,
   &:focus {
     opacity: 0.7;

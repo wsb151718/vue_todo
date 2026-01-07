@@ -1,33 +1,19 @@
 <script setup>
+import { inject } from 'vue'
 import TodoItem from '../molecules/TodoItem.vue'
 
-defineProps({
-  list: {
-    type: Array,
-    required: true,
-  },
-})
-defineEmits({
-  toggleItemState: null,
-  deleteItem: null,
-  editItem: (item, text) => {
-    if (text && typeof text === 'string') {
-      return true
-    }
-    return false
-  },
-})
+const { todoList, deleteTodo, editTodoText, toggleStatus } = inject('todoData')
 </script>
 
 <template>
   <ul class="p-todoList">
     <TodoItem
-      v-for="item in list"
+      v-for="item in todoList"
       :key="item.id"
       v-bind="item"
-      @toggle-state="$emit('toggleItemState', item)"
-      @delete-item="$emit('deleteItem', item)"
-      @edit-item="(text) => $emit('editItem', item, text)"
+      @toggle-state="toggleStatus(item)"
+      @delete-item="deleteTodo(item)"
+      @edit-item="(text) => editTodoText(item, text)"
     ></TodoItem>
   </ul>
 </template>

@@ -1,81 +1,59 @@
 <script setup>
 import TrashIcon from '../icon/TrashIcon.vue'
-import TodoForm from '../molecules/TodoForm.vue'
+import TodoForm from './TodoForm.vue'
 import BaseCapsuelButton from '../atoms/BaseCapsuelButton.vue'
+import { inject } from 'vue'
+import RowWrapper from '../atoms/RowWrapper.vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-defineProps({
-  showCount: {
-    type: Number,
-    required: true,
-  },
-  buttons: {
-    type: Array,
-    required: true,
-  },
-  isFilter: Boolean,
-  isFinished: Boolean,
-})
-defineEmits({
-  addTodo: null,
-  deleteTodos: null,
-  filterTodo: (button) => {
-    if (button && Object.hasOwn(button, 'isFinished') && Object.hasOwn(button, 'isFilter')) {
-      return true
-    }
-    return false
-  },
-})
+const { isFilter, isFinished, filterList, changeFilter } = inject('filterData')
+const ButtonStatusMap = new Map([
+  ['all', '全て'],
+  ['unfinished', '未完了'],
+  ['finished', '完了'],
+])
+
+const { todoList, deleteTodos } = inject('todoData')
 </script>
 
 <template>
-  <div class="c-heading">
+  <RowWrapper justify-content="space-between" class="c-heading">
     <h1 class="c-heading__title">Vue Todo</h1>
-    <p>表示件数 {{ showCount }}件</p>
-  </div>
-  <TodoForm @add="(text) => $emit('addTodo', text)"></TodoForm>
-  <div class="p-itemWrapper">
-    <ul class="c-buttonList">
-      <li v-for="button in buttons" :key="button.text">
+    <p>表示件数 {{ todoList.length }}件</p>
+  </RowWrapper>
+  <TodoForm></TodoForm>
+  <RowWrapper justify-content="space-between" class="p-itemWrapper">
+    <RowWrapper>
+      <li v-for="filter in filterList" :key="filter.status">
         <BaseCapsuelButton
-          :is-active="isFilter === button.isFilter && isFinished === button.isFinished"
-          :is-alert="false"
-          @click-handler="$emit('filterTodo', button)"
+          v-if="ButtonStatusMap.has(filter.status)"
+          :is-active="isFilter === filter.isFilter && isFinished === filter.isFinished"
+          @click-handler="changeFilter(filter)"
         >
-          {{ button.text }}
+          {{ ButtonStatusMap.get(filter.status) }}
         </BaseCapsuelButton>
       </li>
-    </ul>
-    <BaseCapsuelButton :is-active="true" :is-alert="true" @click-handler="$emit('deleteTodos')"
+    </RowWrapper>
+
+    <BaseCapsuelButton :is-active="true" :is-alert="true" @click-handler="deleteTodos('finished')"
       ><TrashIcon class="icon" />削除
     </BaseCapsuelButton>
-  </div>
+  </RowWrapper>
 </template>
 
 <style scoped>
 .p-itemWrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 20px;
 }
 .c-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-bottom: 20px;
   font-size: 12px;
 }
 .c-heading__title {
   font-size: 2.2rem;
   font-weight: bold;
-}
-.c-buttonList {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 </style>

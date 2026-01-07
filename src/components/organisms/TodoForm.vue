@@ -1,20 +1,13 @@
 <script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { inject, onMounted, ref, useTemplateRef } from 'vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
+import BaseButton from '../atoms/BaseButton.vue'
 
 defineOptions({
   inheritAttrs: false,
 })
-
-const emits = defineEmits({
-  add: (value) => {
-    if (value && value.trim().length === 0) {
-      return true
-    }
-    return false
-  },
-})
+const { addTodo } = inject('todoData')
 const input = ref('')
 const error = ref('')
 const baseInputTemp = useTemplateRef('form-input')
@@ -25,7 +18,7 @@ function submitHandler() {
     error.value = '1文字以上入力してください。'
     return
   }
-  emits('add', input.value)
+  addTodo(input.value)
 
   input.value = ''
 
@@ -53,7 +46,7 @@ onMounted(() => {
         class="c-todoInput"
         :is-focus="true"
       />
-      <button type="submit" class="c-todoForm__add">追加</button>
+      <BaseButton type="submit" class="c-todoForm__add">追加</BaseButton>
     </form>
     <ErrorMsg v-show="error.length">
       {{ error }}
@@ -75,18 +68,5 @@ onMounted(() => {
 }
 .c-todoForm__add {
   width: 40px;
-  /* height: 35px; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--main);
-  color: #fff;
-  padding: 8px;
-  font-size: 1.2rem;
-  border-radius: 4px;
-
-  &:hover {
-    opacity: 0.75;
-  }
 }
 </style>
