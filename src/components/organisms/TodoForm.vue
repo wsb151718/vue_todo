@@ -4,6 +4,7 @@ import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 import BaseButton from '../atoms/BaseButton.vue'
 import { todoListInjectKey } from '@/keys/keys'
+import { useValidator } from '@/plugins/validate'
 
 defineOptions({
   inheritAttrs: false,
@@ -13,17 +14,18 @@ const input = ref('')
 const error = ref('')
 const baseInputTemp = useTemplateRef('form-input')
 
+const validate = useValidator()
 function submitHandler() {
   error.value = ''
-  if (input.value.length === 0) {
-    error.value = '1文字以上入力してください。'
-    return
+
+  error.value =
+    validate({ value: input.value, text: 'タスク名' }, { required: true, maxLength: 100 })[0] ?? ''
+  if (!error.value) {
+    addTodo(input.value)
+    input.value = ''
+
+    baseInputTemp.value.focus()
   }
-  addTodo(input.value)
-
-  input.value = ''
-
-  baseInputTemp.value.focus()
 }
 
 onMounted(() => {

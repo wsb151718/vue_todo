@@ -21,7 +21,7 @@ const ButtonStatusMap = new Map([
 
 <template>
   <RowWrapper justify-content="space-between" class="c-heading">
-    <h1 class="c-heading__title">Vue Todo</h1>
+    <h1 class="c-heading__title">{{ $APP_NAME }}</h1>
     <p>表示件数 {{ todoList.length }}件</p>
   </RowWrapper>
   <TodoForm></TodoForm>

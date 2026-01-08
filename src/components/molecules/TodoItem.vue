@@ -4,6 +4,7 @@ import ToggleItem from '../atoms/BaseToggle.vue'
 import BaseCircleButton from '../atoms/BaseCircleButton.vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
+import { useValidator } from '@/plugins/validate'
 
 const props = defineProps({
   text: {
@@ -29,8 +30,10 @@ const emits = defineEmits({
 
 const toggleModel = ref(props.finished)
 const isEditable = ref(false)
+
 const baseInputTemp = useTemplateRef('form-input')
 const input = ref(props.text)
+
 const error = ref('')
 watch(toggleModel, () => {
   emits('toggleState')
@@ -43,15 +46,16 @@ async function changeMode(editable) {
     baseInputTemp.value.focus()
   }
 }
+
+const validate = useValidator()
 function editText() {
   error.value = ''
-  if (input.value.length === 0) {
-    error.value = '1文字以上入力してください。'
-    return
+  error.value =
+    validate({ value: input.value, text: 'タスク名' }, { required: true, maxLength: 100 })[0] ?? ''
+  if (!error.value) {
+    emits('editItem', input.value)
+    isEditable.value = false
   }
-
-  emits('editItem', input.value)
-  isEditable.value = false
 }
 </script>
 
