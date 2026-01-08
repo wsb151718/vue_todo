@@ -7,7 +7,7 @@ const { todoList, deleteTodo, editTodoText, toggleStatus } = inject(todoListInje
 </script>
 
 <template>
-  <ul class="p-todoList">
+  <TransitionGroup tag="ul" class="p-todoList">
     <TodoItem
       v-for="item in todoList"
       :key="item.id"
@@ -16,7 +16,8 @@ const { todoList, deleteTodo, editTodoText, toggleStatus } = inject(todoListInje
       @delete-item="deleteTodo(item)"
       @edit-item="(text) => editTodoText(item, text)"
     ></TodoItem>
-  </ul>
+  </TransitionGroup>
+  <ul class="p-todoList"></ul>
 </template>
 
 <style scoped>
@@ -25,5 +26,25 @@ const { todoList, deleteTodo, editTodoText, toggleStatus } = inject(todoListInje
   flex-flow: column nowrap;
   gap: 10px;
   margin-top: 20px;
+  position: relative;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.v-leave-to {
+  transform: translateX(30px) scaleY(0.01);
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-leave-active {
+  position: absolute;
 }
 </style>

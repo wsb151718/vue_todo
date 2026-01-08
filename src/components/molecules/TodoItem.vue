@@ -86,6 +86,7 @@ function editText() {
 
 <style scoped>
 .c-todoItem {
+  width: 100%;
   font-size: 1.4rem;
   border-radius: 8px;
   border: 1px solid currentColor;
