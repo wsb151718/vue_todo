@@ -1,5 +1,7 @@
 export default {
   install(app) {
-    app.config.globalProperties.$APP_NAME = 'Vue Todo'
+    app.config.globalProperties.$env = {
+      app_name: 'Vue Todo',
+    }
   },
 }

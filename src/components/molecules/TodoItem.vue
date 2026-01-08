@@ -110,10 +110,19 @@ function editText() {
     }
   }
 }
+.c-todoItem__main {
+  flex: 1;
+  overflow: hidden;
+}
+.c-todoItem__text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
 .c-todoItem__inputWrap {
   display: none;
 }
 .c-todoItem__parts {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
