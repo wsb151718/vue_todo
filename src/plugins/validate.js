@@ -1,6 +1,6 @@
 import { inject } from 'vue'
 
-const ValidateKey = Symbol()
+export const ValidateKey = Symbol()
 export function useValidator() {
   const factory = inject(ValidateKey)
   return factory
@@ -12,13 +12,13 @@ export default {
   install(app, options) {
     const defaultRules = {
       required: this.hasValue,
-      max: this.isMax,
-      min: this.isMin,
+      maxLength: this.isMaxLength,
+      minLength: this.isMinLength,
     }
     const defaultMessages = {
       required: '{0}は必須項目です。',
       maxLength: '{0}には{1}文字以下で入力してください。',
-      minLength: '{0}には{1}文字以下で入力してください。',
+      minLength: '{0}には{1}文字以上で入力してください。',
     }
     const optionMessages = options?.messages ?? {}
     const optionRules = options?.rules ?? {}
@@ -26,6 +26,15 @@ export default {
     const messages = { ...defaultMessages, ...optionMessages }
 
     const validate = (valueMap = {}, rules = {}) => {
+      if (typeof valueMap !== 'object' || valueMap == null) {
+        throw new TypeError('valueMapにはオブジェクトを渡してください。')
+      }
+      if (!Object.hasOwn(valueMap, 'value') || !Object.hasOwn(valueMap, 'text')) {
+        throw new Error('valueMapは{value: any, text: string}の形式で渡してください')
+      }
+      if (typeof rules !== 'object' || rules == null) {
+        throw new TypeError('rulesにはオブジェクトを渡してください。')
+      }
       const errorMessages = []
 
       for (const ruleKey of Object.keys(rules)) {
@@ -69,10 +78,12 @@ export default {
   },
 
   isMaxLength(value, options) {
-    const max = options[0]
-    console.log(max, value, value.length)
+    const max = Number(options[0])
+    if (Number.isNaN(max)) {
+      return true
+    }
 
-    if (typeof value === 'string' && value.length > max) {
+    if (String(value).length > max) {
       return false
     }
 
@@ -80,8 +91,12 @@ export default {
   },
 
   isMinLength(value, options) {
-    const min = options[0]
-    if (typeof value === 'string' && value.length < min) {
+    const min = Number(options[0])
+    if (Number.isNaN(min)) {
+      return true
+    }
+
+    if (String(value).length < min) {
       return false
     }
 

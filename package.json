@@ -18,9 +18,12 @@
     "preview": "vite preview",
     "lint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest",
+    "coverage": "coverage"
   },
   "dependencies": {
+    "vitest": "^4.0.16",
     "vue": "^3.5.26"
   },
   "devDependencies": {
