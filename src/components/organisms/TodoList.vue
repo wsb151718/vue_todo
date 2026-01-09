@@ -1,9 +1,8 @@
 <script setup>
-import { inject } from 'vue'
 import TodoItem from '../molecules/TodoItem.vue'
-import { todoListInjectKey } from '@/keys/keys'
+import { useTodoList } from '@/composables/useTodoList'
 
-const { todoList, deleteTodo, editTodoText, toggleStatus } = inject(todoListInjectKey)
+const { todoList, deleteTodo, editTodoText, toggleStatus } = useTodoList()
 </script>
 
 <template>
@@ -32,16 +31,13 @@ const { todoList, deleteTodo, editTodoText, toggleStatus } = inject(todoListInje
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateY(30px);
 }
 
-.v-leave-to {
-  transform: translateX(30px) scaleY(0.01);
-}
-
+.v-move,
 .v-enter-active,
 .v-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-in-out;
 }
 
 .v-leave-active {

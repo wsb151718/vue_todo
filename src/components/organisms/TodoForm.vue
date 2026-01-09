@@ -1,15 +1,15 @@
 <script setup>
-import { inject, onMounted, ref, useTemplateRef } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 import BaseButton from '../atoms/BaseButton.vue'
-import { todoListInjectKey } from '@/keys/keys'
 import { useValidator } from '@/plugins/validate'
+import { useTodoList } from '@/composables/useTodoList'
 
 defineOptions({
   inheritAttrs: false,
 })
-const { addTodo } = inject(todoListInjectKey)
+const { addTodo } = useTodoList()
 const input = ref('')
 const error = ref('')
 const baseInputTemp = useTemplateRef('form-input')

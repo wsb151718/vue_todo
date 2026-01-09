@@ -2,16 +2,14 @@
 import TrashIcon from '../icon/TrashIcon.vue'
 import TodoForm from './TodoForm.vue'
 import BaseCapsuelButton from '../atoms/BaseCapsuelButton.vue'
-import { inject } from 'vue'
 import RowWrapper from '../atoms/RowWrapper.vue'
-import { todoListInjectKey } from '@/keys/keys'
+import { useTodoList } from '@/composables/useTodoList'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const { deleteTodos, isFilter, isFinished, changeFilter, filterList, todoList } =
-  inject(todoListInjectKey)
+const { deleteTodos, isFilter, isFinished, changeFilter, filterList, todoList } = useTodoList()
 const ButtonStatusMap = new Map([
   ['all', '全て'],
   ['unfinished', '未完了'],

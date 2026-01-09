@@ -1,8 +1,9 @@
-import { computed } from 'vue'
+import { computed, inject, provide } from 'vue'
 import { useTodo } from './useTodo'
 import { useTodoFilter } from './useTodoFilter'
 
-export function useTodoList() {
+const todoListInjectKey = Symbol()
+export function setupTodoList() {
   const todo = useTodo()
   const filter = useTodoFilter()
   const filterTodoList = computed(() => {
@@ -11,7 +12,7 @@ export function useTodoList() {
     })
   })
 
-  return {
+  provide(todoListInjectKey, {
     isFilter: filter.isFilter,
     isFinished: filter.isFinished,
     filterList: filter.filterList,
@@ -22,5 +23,15 @@ export function useTodoList() {
     deleteTodo: todo.deleteTodo,
     deleteTodos: todo.deleteTodos,
     toggleStatus: todo.toggleStatus,
+  })
+}
+
+export function useTodoList() {
+  const todo = inject(todoListInjectKey)
+
+  if (!todo) {
+    throw new Error('TodoList is not provided')
   }
+
+  return todo
 }
