@@ -38,7 +38,7 @@ export function useTodo() {
         finished: false,
       },
     }
-    const msg = statusList[status]['msg'] ?? ''
+    const msg = statusList[status]?.msg ?? ''
     if (msg && confirm(msg)) {
       todoList.value = todoList.value.filter((todo) => {
         if (status === 'all') {

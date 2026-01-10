@@ -25,7 +25,7 @@ describe('hasValue', () => {
     expect(validate.hasValue(obj)).toBe(true)
   })
 
-  test('nullish', () => {
+  test('null/undefined判定', () => {
     const nullVal = null
     expect(validate.hasValue(nullVal)).toBe(false)
     const undefinedVal = undefined
@@ -35,26 +35,26 @@ describe('hasValue', () => {
 
 describe('isMaxLength', () => {
   describe('valid test', () => {
-    test('more than length string', () => {
+    test('文字列が最大長以内', () => {
       const str = '1234567890'
       expect(validate.isMaxLength(str, [10])).toBe(true)
       expect(validate.isMaxLength(str, [11])).toBe(true)
     })
-    test('less than length string', () => {
+    test('文字列が最大長超過', () => {
       const str = '1234567890'
       expect(validate.isMaxLength(str, [9])).toBe(false)
     })
-    test('number', () => {
+    test('数値', () => {
       const num = 10
       expect(validate.isMaxLength(num, [2])).toBe(true)
       expect(validate.isMaxLength(num, [1])).toBe(false)
     })
-    test('undefined', () => {
+    test('未定義', () => {
       const undefinedVal = undefined
       expect(validate.isMaxLength(undefinedVal, [9])).toBe(true)
     })
 
-    test('invalid options', () => {
+    test('無効なオプション', () => {
       const val = ''
 
       expect(validate.isMaxLength(val, [])).toBe(true)
@@ -63,7 +63,7 @@ describe('isMaxLength', () => {
   })
 
   describe('invalid test', () => {
-    test('empty object', () => {
+    test('空のオブジェクト', () => {
       const empty = Object.create(null)
 
       expect(() => validate.isMaxLength(empty, [1])).toThrow()
@@ -73,22 +73,22 @@ describe('isMaxLength', () => {
 
 describe('isMinLength', () => {
   describe('valid test', () => {
-    test('more than length string', () => {
+    test('文字列が最小長以上', () => {
       const str = '1234567890'
       expect(validate.isMinLength(str, [10])).toBe(true)
       expect(validate.isMinLength(str, [9])).toBe(true)
     })
-    test('less than length string', () => {
+    test('文字列が最小長未満', () => {
       const str = '1234567890'
       expect(validate.isMinLength(str, [11])).toBe(false)
     })
-    test('number', () => {
+    test('数値', () => {
       const num = 10
       expect(validate.isMinLength(num, [2])).toBe(true)
       expect(validate.isMinLength(num, [3])).toBe(false)
     })
 
-    test('empty options', () => {
+    test('空のオプション', () => {
       const val = ''
       expect(validate.isMinLength(val, [])).toBe(true)
       expect(validate.isMinLength(val, ['a'])).toBe(true)
@@ -96,7 +96,7 @@ describe('isMinLength', () => {
   })
 
   describe('invalid test', () => {
-    test('empty object', () => {
+    test('空のオブジェクト', () => {
       const empty = Object.create(null)
       expect(() => validate.isMinLength(empty, [1])).toThrow()
     })
@@ -113,7 +113,7 @@ function getValidator(options = {}) {
 }
 
 describe('validate test', () => {
-  test('single rule', () => {
+  test('単一ルール', () => {
     const validValueMap = { value: 'string', text: '文字列' }
     const invalidValueMap = { value: '', text: '文字列' }
     const rules = { required: true }
@@ -122,7 +122,7 @@ describe('validate test', () => {
     expect(validator(validValueMap, rules)).toEqual([])
     expect(validator(invalidValueMap, rules)).toEqual(['文字列は必須項目です。'])
   })
-  test('multiple rule', () => {
+  test('複数ルール', () => {
     const validValueMap = { value: 'string', text: '文字列' }
     const invalidValueMap = { value: '', text: '文字列' }
     const rules = { required: true, minLength: 2 }
@@ -135,7 +135,7 @@ describe('validate test', () => {
     ])
   })
 
-  test('no rule', () => {
+  test('ルールなし', () => {
     const valueMap = { value: 'string', text: '文字列' }
     const rules = {}
     const validator = getValidator()
@@ -143,7 +143,7 @@ describe('validate test', () => {
     expect(validator(valueMap, rules)).toEqual([])
   })
 
-  test('ignored rule', () => {
+  test('無効化されたルール', () => {
     const valueMap = { value: 4, text: '文字列' }
     const rules = { required: false }
     const validator = getValidator()
@@ -151,7 +151,7 @@ describe('validate test', () => {
     expect(validator(valueMap, rules)).toEqual([])
   })
 
-  test('not exists rule', () => {
+  test('存在しないルール', () => {
     const valueMap = { value: 4, text: '文字列' }
     const rules = { max: 8 }
     const validator = getValidator()
@@ -159,7 +159,7 @@ describe('validate test', () => {
     expect(validator(valueMap, rules)).toEqual([])
   })
 
-  test('incorrectly valueMap', () => {
+  test('不正なvalueMap', () => {
     const incorrectlyTypeValue = 'string'
     const missingPropertyValue1 = { value: 'str' }
     const missingPropertyValue2 = { valu: 'str', text: '文字列' }
@@ -175,7 +175,7 @@ describe('validate test', () => {
     )
   })
 
-  test('incorrectly rules', () => {
+  test('不正なルール', () => {
     const value = { value: 'string', text: '文字列' }
     const invalidTypeRule = 'required'
     const validator = getValidator()
