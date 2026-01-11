@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <p class="error">
+  <p class="error" role="alert">
     <slot></slot>
   </p>
 </template>

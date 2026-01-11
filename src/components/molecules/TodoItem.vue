@@ -79,7 +79,11 @@ function editText() {
     </div>
     <div class="c-todoItem__parts">
       <ToggleItem v-model="toggleModel" />
-      <BaseCircleButton :is-delete="true" @click-handler="$emit('deleteItem')"></BaseCircleButton>
+      <BaseCircleButton
+        :is-delete="true"
+        aria-label="delete"
+        @click-handler="$emit('deleteItem')"
+      ></BaseCircleButton>
     </div>
   </li>
 </template>

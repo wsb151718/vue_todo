@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 import BaseButton from '../atoms/BaseButton.vue'
@@ -28,7 +28,8 @@ function submitHandler() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick()
   baseInputTemp.value.focus()
 })
 </script>
@@ -48,8 +49,9 @@ onMounted(() => {
         placeholder="新規タスクをここに追加"
         class="c-todoInput"
         :is-focus="true"
+        aria-label="input-task"
       />
-      <BaseButton type="submit" class="c-todoForm__add">追加</BaseButton>
+      <BaseButton type="submit" class="c-todoForm__add" aria-label="add-task">追加</BaseButton>
     </form>
     <ErrorMsg v-show="error.length">
       {{ error }}

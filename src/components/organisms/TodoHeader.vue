@@ -29,6 +29,7 @@ const ButtonStatusMap = new Map([
         <BaseCapsuelButton
           v-if="ButtonStatusMap.has(filter.status)"
           :is-active="isFilter === filter.isFilter && isFinished === filter.isFinished"
+          :aria-label="'filter-task-' + filter.status"
           @click-handler="changeFilter(filter.isFilter, filter.isFinished)"
         >
           {{ ButtonStatusMap.get(filter.status) }}
@@ -36,7 +37,11 @@ const ButtonStatusMap = new Map([
       </li>
     </RowWrapper>
 
-    <BaseCapsuelButton :is-active="true" :is-alert="true" @click-handler="deleteTodos('finished')"
+    <BaseCapsuelButton
+      :is-active="true"
+      :is-alert="true"
+      aria-label="all-delete"
+      @click-handler="deleteTodos('finished')"
       ><TrashIcon class="icon" />削除
     </BaseCapsuelButton>
   </RowWrapper>
