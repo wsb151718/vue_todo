@@ -53,6 +53,7 @@ function editText() {
   error.value =
     validate({ value: input.value, text: 'タスク名' }, { required: true, maxLength: 100 })[0] ?? ''
   if (!error.value) {
+    input.value = input.value.trim()
     emits('editItem', input.value)
     isEditable.value = false
   }
@@ -66,7 +67,7 @@ function editText() {
       <div class="c-todoItem__inputWrap">
         <BaseInput
           ref="form-input"
-          v-model.trim="input"
+          v-model="input"
           class="c-todoItem__input"
           @keydown.enter="editText"
           @keydown.esc="() => changeMode(false)"
