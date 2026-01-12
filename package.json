@@ -20,7 +20,8 @@
     "format": "prettier --write --experimental-cli src/",
     "prepare": "husky",
     "test": "vitest",
-    "coverage": "coverage"
+    "coverage": "coverage",
+    "test:browser": "vitest --config=vitest.browser.config.js"
   },
   "dependencies": {
     "@testing-library/vue": "^8.1.0",
@@ -45,6 +46,7 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "vite": "^7.3.0",
-    "vite-plugin-vue-devtools": "^8.0.5"
+    "vite-plugin-vue-devtools": "^8.0.5",
+    "vitest-browser-vue": "^2.0.1"
   }
 }

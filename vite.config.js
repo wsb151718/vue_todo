@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from 'node:url'
+﻿import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -14,7 +14,14 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: ['**/node_modules/**', '**/dist/**', '**/build/**', '**/.output/**', '**/coverage/**'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/.output/**',
+      '**/coverage/**',
+      'test/e2e/**',
+    ],
     include: ['**/*.{test,spec}.{ts,tsx,js,jsx}'],
     environment: 'happy-dom',
     projects: [
@@ -23,6 +30,7 @@ export default defineConfig({
         test: {
           name: 'browser',
           include: ['test/components/**/*.{test,spec}.{ts,tsx,js,jsx}'],
+          setupFiles: ['test/setup-browser.js'],
           browser: {
             enabled: true,
             provider: playwright(),

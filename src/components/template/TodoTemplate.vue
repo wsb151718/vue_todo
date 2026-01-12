@@ -4,10 +4,12 @@ import TodoHeader from '../organisms/TodoHeader.vue'
 </script>
 
 <template>
-  <div class="c-todoBox">
-    <TodoHeader></TodoHeader>
-    <TodoList></TodoList>
-  </div>
+  <main>
+    <div class="c-todoBox">
+      <TodoHeader></TodoHeader>
+      <TodoList></TodoList>
+    </div>
+  </main>
 </template>
 
 <style scoped>
@@ -16,10 +18,10 @@ import TodoHeader from '../organisms/TodoHeader.vue'
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0px 5px 10px #aaa;
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translate(-50%);
+  margin-inline: auto;
   width: 500px;
+}
+main {
+  padding-top: 100px;
 }
 </style>
