@@ -3,7 +3,7 @@ import { setupTodoList } from '@/composables/useTodoList'
 import validate from '@/plugins/validate'
 import { cleanup, render, waitFor, screen } from '@testing-library/vue'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { userEvent, page } from 'vitest/browser'
+import { userEvent } from 'vitest/browser'
 import { defineComponent, h } from 'vue'
 
 function renderTodoList() {
@@ -87,7 +87,7 @@ describe('TodoList', () => {
   test('コンテンツが最大表示数を超えているときのテスト', async () => {
     renderTodoList()
     const list = screen.getByTestId('todolist')
-    expect(page.getByTestId('loading')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
 
     // scrollTop をセット
     list.scrollTop = list.scrollHeight - list.clientHeight
@@ -96,8 +96,8 @@ describe('TodoList', () => {
     list.dispatchEvent(new Event('scroll', { bubbles: true }))
 
     await waitFor(() => {
-      expect(page.getByTestId('loading')).toBeInTheDocument()
-      expect(page.getByTestId('loading')).toBeVisible()
+      expect(screen.getByTestId('loading')).toBeInTheDocument()
+      expect(screen.getByTestId('loading')).toBeVisible()
     })
     await waitFor(() => expect(screen.getByText('twelveth')).toBeInTheDocument(), { timeout: 3000 })
   })
