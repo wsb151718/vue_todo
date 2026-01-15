@@ -3,6 +3,7 @@ import TodoItem from '../molecules/TodoItem.vue'
 import { useTodoList } from '@/composables/useTodoList'
 import { computed, ref } from 'vue'
 import LoadingIcon from '../icon/LoadingIcon.vue'
+import TodoModal from '../molecules/TodoModal.vue'
 
 const { todoList, deleteTodo, editTodoText, toggleStatus } = useTodoList()
 
@@ -17,7 +18,6 @@ const isLoading = ref(false)
 function addShowing(e) {
   const currentBottom = Math.ceil(e.target.scrollTop + e.target.clientHeight)
   const isScrolled = currentBottom >= e.target.scrollHeight
-  console.log(currentBottom, e.target.scrollHeight)
 
   if (page.value < max && isScrolled && !isLoading.value) {
     isLoading.value = true
@@ -28,22 +28,40 @@ function addShowing(e) {
     }, 2000)
   }
 }
+
+const modalTargetTodo = ref()
+const isModalOpen = ref(false)
+function openModal(todo) {
+  modalTargetTodo.value = todo
+  isModalOpen.value = true
+}
 </script>
 
 <template>
   <TransitionGroup tag="ul" class="p-todoList" data-testid="todolist" @scroll="addShowing">
     <TodoItem
-      v-for="item in showingTodoList"
+      v-for="(item, index) in showingTodoList"
       :key="item.id"
       v-bind="item"
+      :index="index"
       @toggle-state="toggleStatus(item)"
       @delete-item="deleteTodo(item)"
       @edit-item="(text) => editTodoText(item, text)"
+      @open-modal="openModal(item)"
     ></TodoItem>
     <li v-if="isLoading" key="loading-icon" class="c-loading" data-testid="loading">
       <LoadingIcon></LoadingIcon>
     </li>
   </TransitionGroup>
+
+  <Teleport to="body">
+    <TodoModal
+      v-model:is-open="isModalOpen"
+      v-model:todo="modalTargetTodo"
+      @delete-item="deleteTodo(modalTargetTodo)"
+      @edit-item="(text) => editTodoText(modalTargetTodo, text)"
+    />
+  </Teleport>
 </template>
 
 <style scoped>

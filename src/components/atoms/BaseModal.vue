@@ -15,7 +15,7 @@ function close() {
 <template>
   <div class="c-modal js-modal">
     <div v-click-outside="close" class="c-modal__container" v-bind="$attrs">
-      <a class="c-modal__close" href="javascript:void(0)" @click="close">×</a>
+      <a class="c-modal__close" href="javascript:void(0)" @click-handler="close">×</a>
       <div class="c-modal__main">
         <slot name="header"></slot>
         <slot></slot>

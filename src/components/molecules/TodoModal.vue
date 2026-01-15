@@ -3,24 +3,18 @@ import BaseModal from '../atoms/BaseModal.vue'
 import BaseButton from '../atoms/BaseButton.vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
-import { ref } from 'process'
+import { ref, watch } from 'vue'
 import { useValidator } from '@/plugins/validate'
 
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-  text: {
-    type: String,
-    required: true,
-  },
-})
+const todo = defineModel('todo', {
+  type: Object,
+  default: () => ({ id: -1, text: '' }),
+  validator(value) {
+    if (typeof value !== 'object') {
+      return false
+    }
 
-const emits = defineEmits({
-  deleteItem: null,
-  editItem: (text) => {
-    if (!text && typeof text !== 'string') {
+    if (!(Object.hasOwn(value, 'id') && Object.hasOwn(value, 'text'))) {
       return false
     }
 
@@ -28,7 +22,25 @@ const emits = defineEmits({
   },
 })
 
-const input = ref(props.text.value)
+const isModalOpen = defineModel('isOpen', { type: Boolean })
+const input = ref(todo.value.text)
+watch(
+  () => todo.value.text,
+  () => {
+    input.value = todo.value.text
+  },
+)
+
+const emits = defineEmits({
+  deleteItem: null,
+  editItem: (text) => {
+    if (!text || typeof text !== 'string') {
+      return false
+    }
+
+    return true
+  },
+})
 
 const validate = useValidator()
 const error = ref({})
@@ -37,10 +49,18 @@ function submitHandler() {
   // Todo TodoItemと同じバリデーションなので、バリデーションルールをどこかに一元化する。
   error.value.title =
     validate({ value: input.value, text: 'タスク名' }, { required: true, maxLength: 100 })[0] ?? ''
-  if (!error.value) {
+
+  // Todo タイトルだけでエラーを判定するのではなく、他のすべての項目でバリデーションエラーがないか判定できるようにする。
+  if (!error.value.title) {
     input.value = input.value.trim()
     emits('editItem', input.value)
   }
+}
+
+function deleteHandler() {
+  // モーダルを閉じる
+  emits('deleteItem')
+  isModalOpen.value = false
 }
 </script>
 
@@ -49,8 +69,8 @@ function submitHandler() {
     <BaseModal v-if="isModalOpen" v-model="isModalOpen">
       <template #header>
         <div class="c-modal__heading">
-          <h3 class="c-modal__title">{{ input }}</h3>
-          <BaseButton is-alert @click="$emit('deleteItem')">削除</BaseButton>
+          <h3 class="c-modal__title">{{ todo.text }}</h3>
+          <BaseButton is-alert @click="deleteHandler">削除</BaseButton>
         </div>
       </template>
       <div class="c-modal__main">
@@ -60,7 +80,7 @@ function submitHandler() {
               <label for="modal-todo-task">タスク名: </label>
             </dt>
             <dd>
-              <BaseInput id="modal-todo-task" v-model.lazy="input" />
+              <BaseInput id="modal-todo-task" v-model.lazy.trim="input" />
               <ErrorMsg>
                 {{ error.title }}
               </ErrorMsg>

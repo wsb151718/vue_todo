@@ -5,6 +5,7 @@ import BaseCircleButton from '../atoms/BaseCircleButton.vue'
 import BaseInput from '../atoms/BaseInput.vue'
 import ErrorMsg from '../atoms/ErrorMsg.vue'
 import { useValidator } from '@/plugins/validate'
+import BaseButton from '../atoms/BaseButton.vue'
 
 const props = defineProps({
   text: {
@@ -16,10 +17,15 @@ const props = defineProps({
     required: true,
   },
   finished: Boolean,
+  index: {
+    type: Number,
+    required: true,
+  },
 })
 const emits = defineEmits({
   toggleState: null,
   deleteItem: null,
+  openModal: null,
   editItem: (value) => {
     if (value && typeof value === 'string' && value.length !== 0) {
       return true
@@ -79,6 +85,7 @@ function editText() {
       </div>
     </div>
     <div class="c-todoItem__parts">
+      <BaseButton @click="$emit('openModal')">編集</BaseButton>
       <ToggleItem v-model="toggleModel" />
       <BaseCircleButton
         :is-delete="true"
@@ -99,6 +106,7 @@ function editText() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   transition: all 0.25s ease;
   &.disabled {
     color: #aaa;
