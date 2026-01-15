@@ -1,9 +1,6 @@
 <script setup>
 import { useTemplateRef, ref, watch } from 'vue'
 
-defineProps({
-  placeholder: { type: String, default: '' },
-})
 const [inputModel, modifired] = defineModel({ type: String })
 const inputValue = ref(inputModel.value ?? '')
 const inputComponent = useTemplateRef('input-text')
@@ -37,7 +34,6 @@ defineExpose({ focus })
     :value="inputValue"
     type="text"
     class="c-input"
-    :placeholder="placeholder"
     @input="inputHandler"
     @change="changeHandler"
   />
